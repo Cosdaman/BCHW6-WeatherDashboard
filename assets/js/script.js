@@ -8,6 +8,13 @@ let api = "36766f9ac5083f2ffedc325da251c95a"
 let searchBtn = $('#searchBtn')
 let city = $('#searchInput')
 
+//variable declarations
+let currentWeather = new Object();
+let forecastWeather = [];
+let momentFormat = "MMM DD, YYYY"
+
+
+
 function loadHistory() {
     //parse json
     //render into search
@@ -25,47 +32,64 @@ function fetchFunc(fetchURL) {
         })
         .then(function (data) {
             if (data) {
-                console.log("data lon lat");
-                console.log(data);
                 let latitude = data.coord.lat;
                 let longitude = data.coord.lon;
-                console.log(data.coord.lon)
-                fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&units=metric&exclude=hourly,daily,minutely,alerts&appid=" + api, {
-                })
-                    .then(function (response) {
-                        if (response.status === 200) {
-                            return response.json();
-                        } else {
-                            console.log('error ' + response.status)
-                        }
-                    })
-                    .then(function (data) {
-                        if (data) {
-                            console.log("data info")
-                            console.log(data);
-
-                        }
-                    })
-                fetch("https://api.openweathermap.org/data/2.5/forecast/daily?lat=" + latitude + "&lon=" + longitude + "&cnt=5&units=metric&appid=" + api, {
-                })
-                    .then(function (response) {
-                        if (response.status === 200) {
-                            return response.json();
-                        } else {
-                            console.log('error ' + response.status)
-                        }
-                    })
-                    .then(function (data) {
-                        if (data) {
-                            console.log("data forecast")
-                            console.log(data);
-
-                        }
-                    })
-
+                fetchcurrWeather(longitude, latitude);
+                fetchForecast(longitude, latitude);
             }
         })
 };
+
+function fetchcurrWeather(lon, lat) {
+    fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=metric&exclude=hourly,daily,minutely,alerts&appid=" + api, {
+    })
+        .then(function (response) {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                console.log('error ' + response.status)
+            }
+        })
+        .then(function (data) {
+            if (data) {
+                currentWeather.date = moment.unix(data.current.dt).format(momentFormat);
+                currentWeather.temp = data.current.temp;
+                currentWeather.wind = data.current.wind_speed;
+                currentWeather.humidity = data.current.humidity;
+                currentWeather.uvi = data.current.uvi;
+                currentWeather.weatherIcon = data.current.weather[0].icon;
+            }
+            displayCurrWeather(currentWeather)
+        })
+
+}
+
+function fetchForecast(lon, lat) {
+    fetch("https://api.openweathermap.org/data/2.5/forecast/daily?lat=" + lat + "&lon=" + lon + "&cnt=6&units=metric&appid=" + api, {
+    })
+        .then(function (response) {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                console.log('error ' + response.status)
+            }
+        })
+        .then(function (data) {
+            if (data) {
+                for (let index = 1; index < data.list.length; index++) {
+                    let forecastData = new Object();
+                    forecastData.date = moment.unix(data.list[index].dt).format(momentFormat);
+                    forecastData.temp = data.list[index].temp.day;
+                    forecastData.wind = data.list[index].speed;
+                    forecastData.humidity = data.list[index].humidity;
+                    forecastData.weatherIcon = data.list[index].weather[0].icon;
+                    forecastWeather.push(forecastData)
+                }
+                displayForecast(forecastWeather)
+            }
+        })
+
+}
 
 function search() {
     let fetchURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city.val() + "&units=metric&appid=" + api;
@@ -79,8 +103,17 @@ function saveHistory() {
     //save json stringify
 }
 
-searchBtn.click(search)
+function displayCurrWeather(curr) {
+    console.log("display current")
+    console.log(curr)
+}
 
+function displayForecast(forecast) {
+    console.log("display forecast")
+    console.log(forecast)
+}
+
+searchBtn.click(search)
 //formatting
 //weather icons: 
 //https://openweathermap.org/weather-conditions
