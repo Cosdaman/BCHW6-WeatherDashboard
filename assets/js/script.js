@@ -1,5 +1,6 @@
 console.log("js script connected")
 
+//api key
 let api = "36766f9ac5083f2ffedc325da251c95a"
 
 
@@ -12,8 +13,7 @@ function loadHistory() {
     //render into search
 }
 
-function search() {
-    let fetchURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city.val() + "&units=metric&appid=" + api;
+function fetchFunc(fetchURL) {
     fetch(fetchURL, {
     })
         .then(function (response) {
@@ -25,12 +25,51 @@ function search() {
         })
         .then(function (data) {
             if (data) {
+                console.log("data lon lat");
                 console.log(data);
-                console.log(data.main.temp)
-                console.log(data.wind.speed)
-                console.log(data.main.humidity)
+                let latitude = data.coord.lat;
+                let longitude = data.coord.lon;
+                console.log(data.coord.lon)
+                fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&units=metric&exclude=hourly,daily,minutely,alerts&appid=" + api, {
+                })
+                    .then(function (response) {
+                        if (response.status === 200) {
+                            return response.json();
+                        } else {
+                            console.log('error ' + response.status)
+                        }
+                    })
+                    .then(function (data) {
+                        if (data) {
+                            console.log("data info")
+                            console.log(data);
+
+                        }
+                    })
+                fetch("https://api.openweathermap.org/data/2.5/forecast/daily?lat=" + latitude + "&lon=" + longitude + "&cnt=5&units=metric&appid=" + api, {
+                })
+                    .then(function (response) {
+                        if (response.status === 200) {
+                            return response.json();
+                        } else {
+                            console.log('error ' + response.status)
+                        }
+                    })
+                    .then(function (data) {
+                        if (data) {
+                            console.log("data forecast")
+                            console.log(data);
+
+                        }
+                    })
+
             }
         })
+};
+
+function search() {
+    let fetchURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city.val() + "&units=metric&appid=" + api;
+    fetchFunc(fetchURL);
 }
 
 function saveHistory() {
