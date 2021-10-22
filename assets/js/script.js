@@ -8,6 +8,7 @@ let api = "36766f9ac5083f2ffedc325da251c95a"
 let searchBtn = $('#searchBtn')
 let city = $('#searchInput')
 let currentWeatherDiv = $("#currentWeather");
+let searchHistoryDiv = $("#searchHistory");
 
 //variable declarations
 let currentWeather = new Object();
@@ -16,14 +17,38 @@ let momentFormat = "MMM DD, YYYY"
 let searchHistory = [];
 
 
-
+//loads history from local storage 
 function loadHistory() {
-    //parse json
+    var localStoredHistory = JSON.parse(localStorage.getItem("searchHistoryLocal"));
+    if (localStoredHistory !== null) {
+        searchHistory = localStoredHistory
+    }
+
+    for (let index = 0; index < searchHistory.length; index++) {
+        let buttonEl = $("<button>");
+        buttonEl.addClass("btn btn-outline-secondary historyBtn");
+        buttonEl.text(searchHistory[index]);
+        buttonEl.attr("value", searchHistory[index]);
+        searchHistoryDiv.append(buttonEl);
+    }
+
+    let historyBtnArr = $(".historyBtn");
+
+    historyBtnArr.click(historyBtnClick)
+
     //render into search
 }
 
-function search() {
-    let fetchURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city.val() + "&units=metric&appid=" + api;
+function historyBtnClick() {
+    search(this.value)
+}
+
+function prepURL() {
+    search(city.val());
+}
+
+function search(cityName) {
+    let fetchURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&appid=" + api;
     $("#forecastedWeather").html("");
     fetchFunc(fetchURL);
 }
@@ -110,11 +135,15 @@ function fetchForecast(lon, lat) {
 
 //saves last 5 searches to localstorage
 function saveHistory(x) {
-    searchHistory.unshift(x);
+    if (searchHistory.indexOf(x) == -1) {
+        searchHistory.unshift(x);
+    }
     if (searchHistory.length > 5) {
         searchHistory.pop();
     }
     localStorage.setItem("searchHistoryLocal", JSON.stringify(searchHistory));
+    $("#searchHistory").html("");
+    loadHistory();
 }
 
 //displays current weather
@@ -156,8 +185,8 @@ function displayForecast(forecast) {
     }
 }
 
-
-searchBtn.click(search)
+loadHistory();
+searchBtn.click(prepURL)
 
 
 //formatting
