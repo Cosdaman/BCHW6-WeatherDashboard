@@ -36,7 +36,7 @@ function fetchFunc(fetchURL) {
                 return response.json();
             } else {
                 console.log('error ' + response.status)
-                $('#exampleModal').modal('show')
+                $('#modal').modal('show')
                 $("#errorCode").html("Please check your input. " +
                     "<br/><br/>" + "Error Code: " + response.status)
             }
@@ -108,14 +108,13 @@ function fetchForecast(lon, lat) {
 
 
 
-
+//saves last 5 searches to localstorage
 function saveHistory(x) {
-    console.log("savehistory")
-    console.log(x)
-    //empty array of like 5
-    //everytime search is pressed add to start of array
-    //when more than 5 pop array
-    //save json stringify
+    searchHistory.unshift(x);
+    if (searchHistory.length > 5) {
+        searchHistory.pop();
+    }
+    localStorage.setItem("searchHistoryLocal", JSON.stringify(searchHistory));
 }
 
 
