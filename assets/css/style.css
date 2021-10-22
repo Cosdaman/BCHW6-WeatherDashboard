@@ -19,3 +19,12 @@ h2{
 #uvi{
     display: flex;
 }
+
+#forecastedWeather{
+    display: flex;
+}
+
+#currentWeather{
+    display: flex;
+    text-align: center;
+}

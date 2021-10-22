@@ -57,7 +57,6 @@ function fetchcurrWeather(lon, lat) {
         })
         .then(function (data) {
             if (data) {
-                console.log(data)
                 currentWeather.date = moment.unix(data.current.dt).format(momentFormat);
                 currentWeather.temp = data.current.temp;
                 currentWeather.wind = data.current.wind_speed;
@@ -114,8 +113,6 @@ function saveHistory() {
 
 
 function displayCurrWeather(curr) {
-    console.log("display current");
-    console.log(curr);
 
     let pEl = $("#uviActual")
     $("#currWHead").text(curr.name + ", " + curr.date);
@@ -137,9 +134,22 @@ function displayCurrWeather(curr) {
 }
 
 function displayForecast(forecast) {
-    console.log("display forecast")
-    console.log(forecast)
-    $("#forecastedWeather")
+    console.log("display forecast");
+    console.log(forecast);
+
+    for (let index = 0; index < forecast.length; index++) {
+        console.log(forecast[index]);
+        let divEl = $("<div>");
+        divEl.addClass("col forecast")
+        let hEl = $("<h3>");
+        hEl.addClass("fs-4");
+        hEl.text(moment(forecast[index].date, momentFormat).format("M-DD-YY"));
+        $("#forecastedWeather").append(divEl);
+        divEl.append(hEl);
+        divEl.append($("<p>").text("Temp: " + forecast[index].temp + " celsius"));
+        divEl.append($("<p>").text("Wind: " + forecast[index].wind + " meter/sec"));
+        divEl.append($("<p>").text("Humidity: " + forecast[index].humidity + "%"));
+    }
 }
 
 // createPlaceholders();
