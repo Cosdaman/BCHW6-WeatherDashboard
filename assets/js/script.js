@@ -117,7 +117,7 @@ function saveHistory(x) {
     localStorage.setItem("searchHistoryLocal", JSON.stringify(searchHistory));
 }
 
-
+//displays current weather
 function displayCurrWeather(curr) {
 
     let pEl = $("#uviActual")
