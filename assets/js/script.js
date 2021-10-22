@@ -33,14 +33,12 @@ function loadHistory() {
     }
 
     let historyBtnArr = $(".historyBtn");
+    historyBtnArr.click(historyBtnClick);
 
-    historyBtnArr.click(historyBtnClick)
-
-    //render into search
 }
 
 function historyBtnClick() {
-    search(this.value)
+    search(this.value);
 }
 
 function prepURL() {
@@ -138,6 +136,7 @@ function saveHistory(x) {
     if (searchHistory.indexOf(x) == -1) {
         searchHistory.unshift(x);
     }
+
     if (searchHistory.length > 5) {
         searchHistory.pop();
     }
