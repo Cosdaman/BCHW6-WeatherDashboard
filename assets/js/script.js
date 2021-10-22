@@ -7,6 +7,7 @@ let api = "36766f9ac5083f2ffedc325da251c95a"
 //dom declaration
 let searchBtn = $('#searchBtn')
 let city = $('#searchInput')
+let currentWeatherDiv = $("#currentWeather");
 
 //variable declarations
 let currentWeather = new Object();
@@ -28,10 +29,14 @@ function fetchFunc(fetchURL) {
                 return response.json();
             } else {
                 console.log('error ' + response.status)
+                $('#exampleModal').modal('show')
+                $("#errorCode").html("Please check your input. " +
+                    "<br/><br/>" + "Error Code: " + response.status)
             }
         })
         .then(function (data) {
             if (data) {
+                currentWeather.name = data.name
                 let latitude = data.coord.lat;
                 let longitude = data.coord.lon;
                 fetchcurrWeather(longitude, latitude);
@@ -52,6 +57,7 @@ function fetchcurrWeather(lon, lat) {
         })
         .then(function (data) {
             if (data) {
+                console.log(data)
                 currentWeather.date = moment.unix(data.current.dt).format(momentFormat);
                 currentWeather.temp = data.current.temp;
                 currentWeather.wind = data.current.wind_speed;
@@ -72,6 +78,7 @@ function fetchForecast(lon, lat) {
                 return response.json();
             } else {
                 console.log('error ' + response.status)
+
             }
         })
         .then(function (data) {
@@ -93,8 +100,10 @@ function fetchForecast(lon, lat) {
 
 function search() {
     let fetchURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city.val() + "&units=metric&appid=" + api;
+    currentWeatherDiv.innerHTML = "";
     fetchFunc(fetchURL);
 }
+
 
 function saveHistory() {
     //empty array of like 5
@@ -103,20 +112,39 @@ function saveHistory() {
     //save json stringify
 }
 
+
 function displayCurrWeather(curr) {
-    console.log("display current")
-    console.log(curr)
+    console.log("display current");
+    console.log(curr);
+
+    let pEl = $("#uviActual")
+    $("#currWHead").text(curr.name + ", " + curr.date);
+    $("#currWTemp").text("Temp: " + curr.temp + " celsius");
+    $("#currWWind").text("Wind: " + curr.wind + " meter/sec");
+    $("#currWHumidity").text("Humidity: " + curr.humidity + "%");
+    $("#uviLabel").text("UV Index: ")
+    if (curr.uvi < 2) {
+        pEl.css({ "background-color": "#99FF99" })
+    } else if (curr.uvi < 5) {
+        pEl.css({ "background-color": "#FFFF00" })
+    } else if (curr.uvi < 7) {
+        pEl.css({ "background-color": "#b05441" })
+    } else {
+        pEl.css({ "background-color": "#8648bd" })
+    }
+    pEl.text(curr.uvi);
+    pEl.css({ "padding-left": "3px", "padding-right": "3px" });
 }
 
 function displayForecast(forecast) {
     console.log("display forecast")
     console.log(forecast)
+    $("#forecastedWeather")
 }
+
+// createPlaceholders();
 
 searchBtn.click(search)
 //formatting
 //weather icons: 
 //https://openweathermap.org/weather-conditions
-//docs 
-//https://openweathermap.org/current
-//https://openweathermap.org/api/one-call-api
