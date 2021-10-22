@@ -13,12 +13,19 @@ let currentWeatherDiv = $("#currentWeather");
 let currentWeather = new Object();
 let forecastWeather = [];
 let momentFormat = "MMM DD, YYYY"
+let searchHistory = [];
 
 
 
 function loadHistory() {
     //parse json
     //render into search
+}
+
+function search() {
+    let fetchURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city.val() + "&units=metric&appid=" + api;
+    $("#forecastedWeather").html("");
+    fetchFunc(fetchURL);
 }
 
 function fetchFunc(fetchURL) {
@@ -36,6 +43,7 @@ function fetchFunc(fetchURL) {
         })
         .then(function (data) {
             if (data) {
+                saveHistory(data.name)
                 currentWeather.name = data.name
                 let latitude = data.coord.lat;
                 let longitude = data.coord.lon;
@@ -92,19 +100,18 @@ function fetchForecast(lon, lat) {
                     forecastWeather.push(forecastData)
                 }
                 displayForecast(forecastWeather)
+                forecastWeather = [];
             }
         })
 
 }
 
-function search() {
-    let fetchURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city.val() + "&units=metric&appid=" + api;
-    currentWeatherDiv.innerHTML = "";
-    fetchFunc(fetchURL);
-}
 
 
-function saveHistory() {
+
+function saveHistory(x) {
+    console.log("savehistory")
+    console.log(x)
     //empty array of like 5
     //everytime search is pressed add to start of array
     //when more than 5 pop array
@@ -133,12 +140,10 @@ function displayCurrWeather(curr) {
     pEl.css({ "padding-left": "3px", "padding-right": "3px" });
 }
 
-function displayForecast(forecast) {
-    console.log("display forecast");
-    console.log(forecast);
 
+//displays forecast
+function displayForecast(forecast) {
     for (let index = 0; index < forecast.length; index++) {
-        console.log(forecast[index]);
         let divEl = $("<div>");
         divEl.addClass("col forecast")
         let hEl = $("<h3>");
@@ -152,9 +157,10 @@ function displayForecast(forecast) {
     }
 }
 
-// createPlaceholders();
 
 searchBtn.click(search)
+
+
 //formatting
 //weather icons: 
 //https://openweathermap.org/weather-conditions
