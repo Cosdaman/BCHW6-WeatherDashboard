@@ -1,7 +1,8 @@
 # BCHW6-WeatherDashboard  
 
 Description:  
-This application is meant to showcase the developer's recently learned skills in third party web APIs.  
+This application is meant to showcase the developer's recently learned skills in third party web APIs. It also displays the developer's continuously developing skills in Bootstrap, JQuery, and JS Date Libraries. 
+
 The open weather API is used to show both the current forecast, and the 5 day forecast.
 
 
