@@ -49,7 +49,6 @@ function prepURL() {
 //preps the fetch url with an input
 function search(cityName) {
     let fetchURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&appid=" + api;
-    $("#forecastedWeather").html("");
     fetchFunc(fetchURL);
 }
 
@@ -59,6 +58,7 @@ function fetchFunc(fetchURL) {
     })
         .then(function (response) {
             if (response.status === 200) {
+                $("#forecastedWeather").html("");
                 return response.json();
             } else {
                 console.log('error ' + response.status)
@@ -98,7 +98,6 @@ function fetchcurrWeather(lon, lat) {
                 currentWeather.humidity = data.current.humidity;
                 currentWeather.uvi = data.current.uvi;
                 currentWeather.weatherIcon = "http://openweathermap.org/img/wn/" + data.current.weather[0].icon + "@2x.png";
-
             }
             displayCurrWeather(currentWeather)
         })
@@ -151,21 +150,20 @@ function saveHistory(x) {
 //displays current weather
 function displayCurrWeather(curr) {
     let pEl = $("#uviActual");
-    $("#currentWeather").addClass("border border-dark rounded")
-    console.log(curr.weatherIcon);
+    $("#currentWeather").addClass("border border-dark rounded");
     $("#currWHead").html(curr.name + ", " + curr.date + "<img src='" + curr.weatherIcon + "'>");
     $("#currWTemp").text("Temp: " + curr.temp + " celsius");
     $("#currWWind").text("Wind: " + curr.wind + " meter/sec");
     $("#currWHumidity").text("Humidity: " + curr.humidity + "%");
-    $("#uviLabel").text("UV Index: ")
+    $("#uviLabel").text("UV Index: ");
     if (curr.uvi < 2) {
-        pEl.css({ "background-color": "#99FF99" })
+        pEl.css({ "background-color": "#99FF99" });
     } else if (curr.uvi < 5) {
-        pEl.css({ "background-color": "#FFFF00" })
+        pEl.css({ "background-color": "#FFFF00" });
     } else if (curr.uvi < 7) {
-        pEl.css({ "background-color": "#b05441" })
+        pEl.css({ "background-color": "#b05441" });
     } else {
-        pEl.css({ "background-color": "#8648bd" })
+        pEl.css({ "background-color": "#8648bd" });
     }
     pEl.text(curr.uvi);
     pEl.css({ "padding-left": "3px", "padding-right": "3px" });
