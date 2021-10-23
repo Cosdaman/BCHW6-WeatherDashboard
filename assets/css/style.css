@@ -1,10 +1,10 @@
 body {
-    background-color: antiquewhite;
+    background-color: #a9a9a9;
 }
 
 h1 {
     text-align: center;
-    background-color: burlywood;
+    background-color: #808080;
 }
 
 h2{
@@ -22,9 +22,11 @@ h2{
 
 #forecastedWeather{
     display: flex;
+    margin-top: 1vh;
 }
 
 #currentWeather{
     display: flex;
     text-align: center;
+
 }

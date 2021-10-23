@@ -26,7 +26,7 @@ function loadHistory() {
 
     for (let index = 0; index < searchHistory.length; index++) {
         let buttonEl = $("<button>");
-        buttonEl.addClass("btn btn-outline-secondary historyBtn");
+        buttonEl.addClass("btn btn-outline-dark historyBtn");
         buttonEl.text(searchHistory[index]);
         buttonEl.attr("value", searchHistory[index]);
         searchHistoryDiv.append(buttonEl);
@@ -37,20 +37,24 @@ function loadHistory() {
 
 }
 
+//functionality of button
 function historyBtnClick() {
     search(this.value);
 }
 
+//functionality of search bar
 function prepURL() {
     search(city.val());
 }
 
+//preps the fetch url with an input
 function search(cityName) {
     let fetchURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&appid=" + api;
     $("#forecastedWeather").html("");
     fetchFunc(fetchURL);
 }
 
+//fetches forecast based on city name
 function fetchFunc(fetchURL) {
     fetch(fetchURL, {
     })
@@ -76,6 +80,7 @@ function fetchFunc(fetchURL) {
         })
 };
 
+//fetches current weather forecast using longitude and latitude from initial call api
 function fetchcurrWeather(lon, lat) {
     fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=metric&exclude=hourly,daily,minutely,alerts&appid=" + api, {
     })
@@ -93,13 +98,15 @@ function fetchcurrWeather(lon, lat) {
                 currentWeather.wind = data.current.wind_speed;
                 currentWeather.humidity = data.current.humidity;
                 currentWeather.uvi = data.current.uvi;
-                currentWeather.weatherIcon = data.current.weather[0].icon;
+                currentWeather.weatherIcon = "http://openweathermap.org/img/wn/" + data.current.weather[0].icon + "@2x.png";
+
             }
             displayCurrWeather(currentWeather)
         })
 
 }
 
+//fetches 5 day daily forecast using longitude and latitude from initial call api
 function fetchForecast(lon, lat) {
     fetch("https://api.openweathermap.org/data/2.5/forecast/daily?lat=" + lat + "&lon=" + lon + "&cnt=6&units=metric&appid=" + api, {
     })
@@ -119,14 +126,13 @@ function fetchForecast(lon, lat) {
                     forecastData.temp = data.list[index].temp.day;
                     forecastData.wind = data.list[index].speed;
                     forecastData.humidity = data.list[index].humidity;
-                    forecastData.weatherIcon = data.list[index].weather[0].icon;
+                    forecastData.weatherIcon = "http://openweathermap.org/img/wn/" + data.list[index].weather[0].icon + "@2x.png";
                     forecastWeather.push(forecastData)
                 }
                 displayForecast(forecastWeather)
                 forecastWeather = [];
             }
         })
-
 }
 
 
@@ -147,9 +153,10 @@ function saveHistory(x) {
 
 //displays current weather
 function displayCurrWeather(curr) {
-
-    let pEl = $("#uviActual")
-    $("#currWHead").text(curr.name + ", " + curr.date);
+    let pEl = $("#uviActual");
+    $("#currentWeather").addClass("border border-dark rounded")
+    console.log(curr.weatherIcon);
+    $("#currWHead").html(curr.name + ", " + curr.date + "<img src='" + curr.weatherIcon + "'>");
     $("#currWTemp").text("Temp: " + curr.temp + " celsius");
     $("#currWWind").text("Wind: " + curr.wind + " meter/sec");
     $("#currWHumidity").text("Humidity: " + curr.humidity + "%");
@@ -172,10 +179,11 @@ function displayCurrWeather(curr) {
 function displayForecast(forecast) {
     for (let index = 0; index < forecast.length; index++) {
         let divEl = $("<div>");
-        divEl.addClass("col forecast")
+        divEl.addClass("col forecast bg-secondary bg-gradient border border-light")
         let hEl = $("<h3>");
         hEl.addClass("fs-4");
-        hEl.text(moment(forecast[index].date, momentFormat).format("M-DD-YY"));
+        let forecastDateTime = moment(forecast[index].date, momentFormat).format("M-DD-YY")
+        hEl.html(forecastDateTime + "<img src='" + forecast[index].weatherIcon + "'>");
         $("#forecastedWeather").append(divEl);
         divEl.append(hEl);
         divEl.append($("<p>").text("Temp: " + forecast[index].temp + " celsius"));
