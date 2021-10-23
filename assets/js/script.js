@@ -3,7 +3,6 @@ console.log("js script connected")
 //api key
 let api = "36766f9ac5083f2ffedc325da251c95a"
 
-
 //dom declaration
 let searchBtn = $('#searchBtn')
 let city = $('#searchInput')
@@ -15,7 +14,6 @@ let currentWeather = new Object();
 let forecastWeather = [];
 let momentFormat = "MMM DD, YYYY"
 let searchHistory = [];
-
 
 //loads history from local storage 
 function loadHistory() {
@@ -40,6 +38,7 @@ function loadHistory() {
 //functionality of button
 function historyBtnClick() {
     search(this.value);
+    disableEnableButtons($(".historyBtn"));
 }
 
 //functionality of search bar
@@ -135,8 +134,6 @@ function fetchForecast(lon, lat) {
         })
 }
 
-
-
 //saves last 5 searches to localstorage
 function saveHistory(x) {
     if (searchHistory.indexOf(x) == -1) {
@@ -192,10 +189,27 @@ function displayForecast(forecast) {
     }
 }
 
+function disableEnableButtons(arr) {
+    for (let i = 0; i < arr.length; i++) {
+        arr[i].setAttribute("disabled", true);
+    }
+    waitTime(1);
+    for (let i = 0; i < arr.length; i++) {
+        arr[i].setAttribute("disabled", false);
+    }
+}
+
+function waitTime(x) {
+    var waitTime = x;
+    var waitTimer = setInterval(function () {
+
+        if (waitTime <= 0) {
+            clearInterval(waitTimer);
+        }
+        waitTime--;
+    }, 1000);
+}
+
 loadHistory();
 searchBtn.click(prepURL)
 
-
-//formatting
-//weather icons: 
-//https://openweathermap.org/weather-conditions
