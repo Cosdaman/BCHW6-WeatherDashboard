@@ -24,4 +24,6 @@ https://cosdaman.github.io/BCHW6-WeatherDashboard/
 ## Screenshot:  
 ![image](https://user-images.githubusercontent.com/3162991/138566576-b1711bf6-e2f4-42b5-bb18-547c963fa4db.png)
 
+![image](https://user-images.githubusercontent.com/3162991/140446697-fa280bac-76b8-437c-85a8-0d6933203896.png)
+
 
