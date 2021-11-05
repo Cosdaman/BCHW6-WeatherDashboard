@@ -5,15 +5,23 @@ This application is meant to showcase the developer's recently learned skills in
 
 The open weather API is used to show both the current forecast, and the 5 day forecast.
 
-# Technologies Used
+## Technologies Used
 - Bootstrap
 - JQuery
 - MomentJS
 - OpenWeather API
 
-# Screenshot:  
+## Contact Information:  
+Feel free to reach out, you can reach me through:  
+- Discord: Cosdaman#0001  
+- Twitter: @Cosdaman  
+- Email: Cosdaguy@gmail.com  
+
+## Link to page:  
+https://cosdaman.github.io/BCHW6-WeatherDashboard/
+
+
+## Screenshot:  
 ![image](https://user-images.githubusercontent.com/3162991/138566576-b1711bf6-e2f4-42b5-bb18-547c963fa4db.png)
 
 
-# Link to page:  
-https://cosdaman.github.io/BCHW6-WeatherDashboard/
