@@ -1,23 +1,26 @@
 # BCHW6-WeatherDashboard  
 
-Description:  
+## Description  
+
 This application is meant to showcase the developer's recently learned skills in third party web APIs. It also displays the developer's continuously developing skills in Bootstrap, JQuery, and JS Date Libraries. 
 
 The open weather API is used to show both the current forecast, and the 5 day forecast.
 
 ## Technologies Used
+
 - Bootstrap
 - JQuery
 - MomentJS
 - OpenWeather API
 
-## Contact Information:  
+## Contact Information  
+
 Feel free to reach out, you can reach me through:  
 - Discord: Cosdaman#0001  
 - Twitter: @Cosdaman  
 - Email: Cosdaguy@gmail.com  
 
-## Link to page:  
+## Link to page  
 https://cosdaman.github.io/BCHW6-WeatherDashboard/
 
 
